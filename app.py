@@ -114,12 +114,14 @@ def get_or_create_todolist(title, item_strings=[]):
 @app.route('/', methods=["GET","POST"])
 def index():
     form = TodoListForm()
+    count_raw = TodoList.query.all()
+    count = len(count_raw)
     if request.method=="POST":
         title = form.name.data
         items_data = form.items.data
         new_list = get_or_create_todolist(title, items_data.split("\n"))
         return redirect(url_for('all_lists'))
-    return render_template('index.html',form=form)
+    return render_template('index.html',form=form, count=count)
 
 # Provided - see below for additional TODO
 @app.route('/all_lists',methods=["GET","POST"])
